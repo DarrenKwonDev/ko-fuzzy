@@ -12,13 +12,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:watch": "rm -rf ./dist && tsc -w",
     "build": "rm -rf ./dist && tsc",
-    "start:dev": "nodemon --exec ts-node index.ts"
+    "start:dev": "nodemon --exec ts-node ./src/index.ts",
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "author": "darrenkwon <anatomy1545@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^26.0.23",
     "jest": "^27.0.2",
     "nodemon": "^2.0.7",
+    "prettier": "^2.3.0",
+    "ts-jest": "^27.0.1",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2"
   },

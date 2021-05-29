@@ -116,3 +116,14 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+
+tsconfig.json
+src
+coverage
+.vscode
+.travis.yml
+LICENSE
+__test__
+
