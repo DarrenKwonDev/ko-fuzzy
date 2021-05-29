@@ -1,0 +1,32 @@
+{
+  "name": "autofuzzy",
+  "version": "0.0.1",
+  "description": "auto complete and fuzzy search",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">= 4.2.1",
+    "npm": ">= 3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:watch": "rm -rf ./dist && tsc -w",
+    "build": "rm -rf ./dist && tsc",
+    "start:dev": "nodemon --exec ts-node index.ts"
+  },
+  "author": "darrenkwon <anatomy1545@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.0.2",
+    "nodemon": "^2.0.7",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarrenKwonDev/autoFuzzy"
+  },
+  "bugs": {
+    "url": "https://github.com/DarrenKwonDev/auto/issues"
+  }
+}
