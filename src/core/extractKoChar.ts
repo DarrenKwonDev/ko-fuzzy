@@ -17,6 +17,7 @@ function extractKoChar(char: string) {
   let medialOffset = -1;
   let finaleOffset = -1;
 
+  // 초성만 존재하는 경우
   if (char.match(/[ㄱ-ㅎ]/)) {
     initial = char;
     initialOffset = INITIALS.join("").search(char);
