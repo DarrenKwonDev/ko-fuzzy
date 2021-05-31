@@ -11,4 +11,4 @@ const debounce = (callback: Function, ms = 1000) => {
   };
 };
 
-export default debounce
+export default debounce;

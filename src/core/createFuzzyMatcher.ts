@@ -1,4 +1,4 @@
-import escapeRegex from "./escapeRegex";
+import escapeRegex from "../tools/escapeRegex";
 
 function createFuzzyMatcher(input: string) {
   const pattern = [...input].map(escapeRegex).join(".*?");
