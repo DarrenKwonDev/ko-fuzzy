@@ -1,8 +1,6 @@
-import { FINALES, INITIALS, MEDIALS } from "../constants";
+import { BASE, FINALES, INITIALS, MEDIALS } from "../constants";
 
-const BASE = 44032; // 한글 코드 시작: '가'.charCodeAt(0)
-
-function extractKoChar(char: string) {
+function extractKoPhonemes(char: string) {
   // 한글이 아니면 false
   if (!char.match(/[ㄱ-ㅎ가-힣]/)) {
     return false;
@@ -34,4 +32,4 @@ function extractKoChar(char: string) {
   return { initial, medial, finale, initialOffset, medialOffset, finaleOffset };
 }
 
-export default extractKoChar;
+export default extractKoPhonemes;

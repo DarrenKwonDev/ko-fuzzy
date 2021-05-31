@@ -1,6 +1,7 @@
-import extractKoChar from "./core/extractKoChar";
+import extractKoChar from "./tools/extractKoPhonemes";
 import createFuzzyMatcher from "./core/createFuzzyMatcher";
 import getUnicode from "./tools/getUnicode";
+import exactMatch from "./core/exactMatch";
 
 const regex = createFuzzyMatcher("ct");
 
@@ -8,7 +9,10 @@ const regex = createFuzzyMatcher("ct");
 
 // console.log([..."hello"]);
 
-console.log(extractKoChar("ㅇ"));
+console.log(exactMatch("블랙스와"));
+console.log(exactMatch("black"));
+
+// console.log(extractKoChar("ㅇ"));
 // console.log(extractKoChar("안"));
 // console.log(extractKoChar("훟"));
 // console.log(extractKoChar("밝"));
