@@ -1,8 +1,8 @@
 import escapeRegex from "../tools/escapeRegex";
 
-function createFuzzyMatcher(input: string) {
+function fuzzyEnMatch(input: string) {
   const pattern = [...input].map(escapeRegex).join(".*?");
   return new RegExp(pattern);
 }
 
-export default createFuzzyMatcher;
+export default fuzzyEnMatch;

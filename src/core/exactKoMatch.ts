@@ -2,16 +2,16 @@ import { BASE, INITIALS, FINALES, MEDIALS, MIXED, MEDIAL_RANGE } from "../consta
 import extractKoPhonemes from "../tools/extractKoPhonemes";
 import initialToEndKoPhonemes from "../tools/initialToEndKoPhonemes";
 
-function exactMatch(word: string) {
-  // 검색어 중 마지막 문자를 찾아내서 초, 중, 종성 걸러내기
-  let wordArr = [...word];
-  let lastChar = wordArr[wordArr.length - 1];
+function exactKoMatch(searchWord: string): RegExp {
+  let wordArr = [...searchWord];
+  let lastChar = wordArr[wordArr.length - 1]; // 검색어 중 마지막 문자를 찾아내서 초, 중, 종성 걸러내기
+  let frontChars: string[] = [];
   let regexPattern;
   const phonemes = extractKoPhonemes(lastChar); // 영어거나 공백이면 false 반환
 
   if (phonemes) {
     const { initial, medial, finale, initialOffset, medialOffset, finaleOffset } = phonemes;
-    const remainWord = wordArr.slice(0, -1); // 마지막 문자를 제외한 나머지 문자
+    frontChars = wordArr.slice(0, -1); // 마지막 문자를 제외한 나머지 문자
 
     // 마지막 문자의 초성으로 시작하는 첫 문자 => 가, 나, 다, 라, ...
     const baseUniCode = initialOffset * FINALES.length * MEDIALS.length + BASE;
@@ -77,7 +77,7 @@ function exactMatch(word: string) {
     regexPattern = patterns.length > 1 ? `(${patterns.join("|")})` : patterns[0];
   }
 
-  return regexPattern;
+  return new RegExp(frontChars.join("") + regexPattern);
 }
 
-export default exactMatch;
+export default exactKoMatch;

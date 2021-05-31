@@ -2,7 +2,17 @@
 
 ## how to use
 
+```typescript
+const autoFuze = new AutoFuzzy(Object, options)
+...
+```
+
 ## example
+
+```typescript
+console.log(exactKoMatch("서우").test("서울특별시")); // true.
+console.log(/"서우"/.test("서울특별시")); // false.
+```
 
 ## 유니코드 및 관련 작업 설명글
 
@@ -15,6 +25,6 @@
 중성(中聲, nucleus)  
 종성(終聲, coda)
 
-## Inspired by
+#### Inspired by
 
 https://github.com/bluewings

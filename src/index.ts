@@ -1,21 +1,16 @@
+import fs from "fs";
+import path from "path";
+
 import extractKoChar from "./tools/extractKoPhonemes";
-import createFuzzyMatcher from "./core/createFuzzyMatcher";
+import fuzzyEnMatch from "./core/fuzzyEnMatch";
 import getUnicode from "./tools/getUnicode";
-import exactMatch from "./core/exactMatch";
+import exactKoMatch from "./core/exactKoMatch";
 
-const regex = createFuzzyMatcher("ct");
+console.log(exactKoMatch("서우").test("서울특별시")); // true.
+console.log(/"서우"/.test("서울특별시")); // false.
 
-// console.log(regex);
-
-// console.log([..."hello"]);
-
-console.log(exactMatch("블랙스와"));
-console.log(exactMatch("black"));
-
-// console.log(extractKoChar("ㅇ"));
-// console.log(extractKoChar("안"));
-// console.log(extractKoChar("훟"));
-// console.log(extractKoChar("밝"));
+// const fuzzyEnregex = fuzzyEnMatch("ct");
+// console.log(fuzzyEnregex); // /c.*?t/
 
 // console.log(getUnicode("߸"));
 // console.log(getUnicode("한"))
