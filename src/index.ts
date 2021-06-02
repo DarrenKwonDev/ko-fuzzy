@@ -12,34 +12,23 @@ fs.readFile(path.join(__dirname, "../example/data/city.json"), "utf8", (err, dat
   let city = JSON.parse(data);
   city
     .filter((elem: any) => {
-      return exactKoMatch("붕").test(elem["행정구역"]);
+      return exactKoMatch("ㅇㅈ", { consonantMatch: true }).test(elem["행정구역"]);
     })
     .map((elem: any) => console.log(elem["행정구역"]));
 });
 
-// const a = "서울특별시".search(exactMatch("서우")) !== -1;
-// console.log(a); // true
+// console.log(fuzzyEnMatch("ct"));
+// console.log(fuzzyEnMatch("cta"));
 
-// const regex = createFuzzyMatcher("ct");
+// console.log(exactKoMatch("ㅁㄴㅍㄹ"));
 
-// console.log(regex);
+// const FUZZY = `__${parseInt("fuzzy", 36)}__`;
+// const IGNORE_SPACE = `__${parseInt("ignorespace", 36)}__`;
 
-// console.log([..."hello"]);
+// const fuzzy = true;
+// const ignoreSpace = true;
+// const glue = fuzzy ? FUZZY : ignoreSpace ? IGNORE_SPACE : "";
 
-// console.log(exactMatch("블"));
-// console.log(exactMatch("블래"));
-// console.log(exactMatch("블랙"));
+// console.log(glue);
 
-// const movieRegex = exactMatch("블ㄹ");
-
-// console.log(exactMatch("블"));
-
-// console.log(extractKoChar("ㅇ"));
-console.log(extractKoPhonemes("안"));
-// console.log(extractKoChar("훟"));
-// console.log(extractKoChar("밝"));
-
-// console.log(getUnicode("߸"));
-// console.log(getUnicode("한"));
-// console.log(getUnicode("가"));
-// console.log(extractKoChar("한"))
+// console.log(RegExp(FUZZY, "g"));

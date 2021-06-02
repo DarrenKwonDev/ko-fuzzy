@@ -1,8 +1,13 @@
 import { BASE, INITIALS, FINALES, MEDIALS, MIXED, MEDIAL_RANGE } from "../constants";
+import escapeRegex from "../tools/escapeRegex";
 import extractKoPhonemes from "../tools/extractKoPhonemes";
 import initialToEndKoPhonemes from "../tools/initialToEndKoPhonemes";
 
-function exactKoMatch(searchWord: string): RegExp {
+interface exactMatchOptions {
+  consonantMatch?: boolean; // 초성 찾기
+}
+
+function exactKoMatch(searchWord: string, { consonantMatch = false }: exactMatchOptions): RegExp {
   let wordArr = [...searchWord];
   let lastChar = wordArr[wordArr.length - 1]; // 검색어 중 마지막 문자를 찾아내서 초, 중, 종성 걸러내기
   let frontChars: string[] = [];
@@ -75,6 +80,12 @@ function exactKoMatch(searchWord: string): RegExp {
     }
 
     regexPattern = patterns.length > 1 ? `(${patterns.join("|")})` : patterns[0];
+  }
+
+  // 만약 초성 찾기가 활성화 되어 있다면 맨 뒤의 음절을 제외한 앞의 단어들의 전체 range를 추가해야 함
+  // 말이 어려운데, 예를 들어 ㄱㅅ충 => [가-깋][사-싷][충|아-앟]이 되어야 하므로, frontChars에 따로 initialToEndKoPhonemes 함수를 써줘야 한다.
+  if (consonantMatch) {
+    frontChars = frontChars.map((char) => (char.search(/[ㄱ-ㅎ]/) !== -1 ? initialToEndKoPhonemes(char) : escapeRegex(char)));
   }
 
   return new RegExp(frontChars.join("") + regexPattern);
