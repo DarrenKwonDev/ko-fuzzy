@@ -3,11 +3,12 @@ import escapeRegex from "../tools/escapeRegex";
 import extractKoPhonemes from "../tools/extractKoPhonemes";
 import initialToEndKoPhonemes from "../tools/initialToEndKoPhonemes";
 
-interface exactMatchOptions {
+interface regexMatchOptions {
   consonantMatch?: boolean; // 초성 찾기
+  fuzzy?: boolean;
 }
 
-function exactMatch(searchWord: string, { consonantMatch = false }: exactMatchOptions): RegExp {
+function regexMatch(searchWord: string, { consonantMatch = false, fuzzy = false }: regexMatchOptions): RegExp {
   let wordArr = [...searchWord];
   let frontChars: string[] = []; // 맨 뒤의 문자를 제외한 앞의 문자들을 담기 위한 배열
   let regexPattern;
@@ -17,6 +18,7 @@ function exactMatch(searchWord: string, { consonantMatch = false }: exactMatchOp
 
   // 마지막 문자가 한글이 아니므로 별도의 처리를 하지 않고 그냥 일치하는지만 체크하도록
   if (!phonemes) {
+    if (fuzzy) return new RegExp(wordArr.join(".*"));
     return new RegExp(searchWord);
   }
 
@@ -94,7 +96,12 @@ function exactMatch(searchWord: string, { consonantMatch = false }: exactMatchOp
     frontChars = frontChars.map((char) => (char.search(/[ㄱ-ㅎ]/) !== -1 ? initialToEndKoPhonemes(char) : escapeRegex(char)));
   }
 
+  // fuzzy 매칭이면 사이에 문자가 올 수 있다는 것이므로 .*를 삽입하기
+  if (fuzzy) {
+    return new RegExp(frontChars.join(".*") + ".*" + regexPattern);
+  }
+
   return new RegExp(frontChars.join("") + regexPattern);
 }
 
-export default exactMatch;
+export default regexMatch;
