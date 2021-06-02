@@ -8,23 +8,20 @@ interface regexMatchOptions {
   fuzzy?: boolean;
 }
 
+const fuzzyStr = ".*";
+
 function regexMatch(searchWord: string, { consonantMatch = false, fuzzy = false }: regexMatchOptions): RegExp {
   let wordArr = [...searchWord];
-  let frontChars: string[] = []; // 맨 뒤의 문자를 제외한 앞의 문자들을 담기 위한 배열
+  // let frontChars: string[] = []; // 맨 뒤의 문자를 제외한 앞의 문자들을 담기 위한 배열
+  let frontChars = wordArr.slice(0, -1); // 마지막 문자를 제외한 나머지 문자
+
   let regexPattern;
 
   let lastChar = wordArr[wordArr.length - 1]; // 검색어 중 마지막 문자를 찾아내서 초, 중, 종성 걸러내려고 함
   const phonemes = extractKoPhonemes(lastChar); // 영어거나 공백이면 false 반환
 
-  // 마지막 문자가 한글이 아니므로 별도의 처리를 하지 않고 그냥 일치하는지만 체크하도록
-  if (!phonemes) {
-    if (fuzzy) return new RegExp(wordArr.join(".*"));
-    return new RegExp(searchWord);
-  }
-
   if (phonemes) {
     const { initial, medial, finale, initialOffset, medialOffset, finaleOffset } = phonemes;
-    frontChars = wordArr.slice(0, -1); // 마지막 문자를 제외한 나머지 문자
 
     // 마지막 문자의 초성으로 시작하는 첫 문자 => 가, 나, 다, 라, ...
     const baseUniCode = initialOffset * FINALES.length * MEDIALS.length + BASE;
@@ -96,10 +93,14 @@ function regexMatch(searchWord: string, { consonantMatch = false, fuzzy = false 
     frontChars = frontChars.map((char) => (char.search(/[ㄱ-ㅎ]/) !== -1 ? initialToEndKoPhonemes(char) : escapeRegex(char)));
   }
 
-  // fuzzy 매칭이면 사이에 문자가 올 수 있다는 것이므로 .*를 삽입하기
-  if (fuzzy) {
-    return new RegExp(frontChars.join(".*") + ".*" + regexPattern);
+  // 마지막 문자가 한글이 아니므로 별도의 처리를 하지 않고 그냥 일치하는지만 체크하도록
+  if (!phonemes) {
+    if (fuzzy) return new RegExp(frontChars.join(fuzzyStr) + fuzzyStr + lastChar);
+    return new RegExp(searchWord);
   }
+
+  // fuzzy 매칭이면 사이에 문자가 올 수 있다는 것이므로 .*를 삽입하기
+  if (fuzzy) return new RegExp(frontChars.join(fuzzyStr) + fuzzyStr + regexPattern);
 
   return new RegExp(frontChars.join("") + regexPattern);
 }
