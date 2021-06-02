@@ -15,7 +15,7 @@ function exactMatch(searchWord: string, { consonantMatch = false }: exactMatchOp
   let lastChar = wordArr[wordArr.length - 1]; // 검색어 중 마지막 문자를 찾아내서 초, 중, 종성 걸러내려고 함
   const phonemes = extractKoPhonemes(lastChar); // 영어거나 공백이면 false 반환
 
-  // 마지막 문자가 한글이 아니므로 그냥 일치하는지만 체크하도록
+  // 마지막 문자가 한글이 아니므로 별도의 처리를 하지 않고 그냥 일치하는지만 체크하도록
   if (!phonemes) {
     return new RegExp(searchWord);
   }
