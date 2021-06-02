@@ -7,12 +7,18 @@ interface exactMatchOptions {
   consonantMatch?: boolean; // 초성 찾기
 }
 
-function exactKoMatch(searchWord: string, { consonantMatch = false }: exactMatchOptions): RegExp {
+function exactMatch(searchWord: string, { consonantMatch = false }: exactMatchOptions): RegExp {
   let wordArr = [...searchWord];
-  let lastChar = wordArr[wordArr.length - 1]; // 검색어 중 마지막 문자를 찾아내서 초, 중, 종성 걸러내기
-  let frontChars: string[] = [];
+  let frontChars: string[] = []; // 맨 뒤의 문자를 제외한 앞의 문자들을 담기 위한 배열
   let regexPattern;
+
+  let lastChar = wordArr[wordArr.length - 1]; // 검색어 중 마지막 문자를 찾아내서 초, 중, 종성 걸러내려고 함
   const phonemes = extractKoPhonemes(lastChar); // 영어거나 공백이면 false 반환
+
+  // 마지막 문자가 한글이 아니므로 그냥 일치하는지만 체크하도록
+  if (!phonemes) {
+    return new RegExp(searchWord);
+  }
 
   if (phonemes) {
     const { initial, medial, finale, initialOffset, medialOffset, finaleOffset } = phonemes;
@@ -91,4 +97,4 @@ function exactKoMatch(searchWord: string, { consonantMatch = false }: exactMatch
   return new RegExp(frontChars.join("") + regexPattern);
 }
 
-export default exactKoMatch;
+export default exactMatch;
