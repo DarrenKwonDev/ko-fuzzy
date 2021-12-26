@@ -9,7 +9,6 @@
     "npm": ">= 3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build:watch": "rm -rf ./dist && tsc -w",
     "build": "rm -rf ./dist && tsc",
     "start:dev": "nodemon --exec ts-node ./src/index.ts",
@@ -18,6 +17,7 @@
   "author": "darrenkwon <anatomy1545@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^17.0.4",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
     "ts-node": "^10.0.0",
