@@ -24,7 +24,10 @@ var __toCommonJS = /* @__PURE__ */ ((cache) => {
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  regexMatch: () => regexMatch_default
+  escapeRegex: () => escapeRegex_default,
+  extractKoPhonemes: () => extractKoPhonemes_default,
+  getKoreanRegex: () => getKoreanRegex_default,
+  getKoreanUnicode: () => getKoreanUnicode_default
 });
 
 // src/constants/index.ts
@@ -108,9 +111,9 @@ var initialToEndKoPhonemes = (initial) => {
 };
 var initialToEndKoPhonemes_default = initialToEndKoPhonemes;
 
-// src/core/regexMatch.ts
+// src/core/getKoreanRegex.ts
 var fuzzyStr = ".*";
-function regexMatch(searchWord, { consonantMatch = false, fuzzy = false }) {
+function getKoreanRegex(searchWord, { consonantMatch = false, fuzzy = false }) {
   let wordArr = [...searchWord];
   let frontChars = wordArr.slice(0, -1);
   let regexPattern;
@@ -167,9 +170,22 @@ function regexMatch(searchWord, { consonantMatch = false, fuzzy = false }) {
     return new RegExp(frontChars.join(fuzzyStr) + fuzzyStr + regexPattern);
   return new RegExp(frontChars.join("") + regexPattern);
 }
-var regexMatch_default = regexMatch;
+var getKoreanRegex_default = getKoreanRegex;
+
+// src/tools/getKoreanUnicode.ts
+function getKoreanUnicode(word) {
+  let base = word.charCodeAt(0).toString(16);
+  if (base.length < 4) {
+    base = base.padStart(4, "0");
+  }
+  return "U+" + base;
+}
+var getKoreanUnicode_default = getKoreanUnicode;
 module.exports = __toCommonJS(src_exports);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  regexMatch
+  escapeRegex,
+  extractKoPhonemes,
+  getKoreanRegex,
+  getKoreanUnicode
 });

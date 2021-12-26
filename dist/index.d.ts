@@ -1,7 +1,20 @@
-interface regexMatchOptions {
+interface getKoreanRegexOptions {
     consonantMatch?: boolean;
     fuzzy?: boolean;
 }
-declare function regexMatch(searchWord: string, { consonantMatch, fuzzy }: regexMatchOptions): RegExp;
+declare function getKoreanRegex(searchWord: string, { consonantMatch, fuzzy }: getKoreanRegexOptions): RegExp;
 
-export { regexMatch };
+declare function getKoreanUnicode(word: string): string;
+
+declare function escapeRegex(string: string): string;
+
+declare function extractKoPhonemes(char: string): false | {
+    initial: string;
+    medial: string;
+    finale: string;
+    initialOffset: number;
+    medialOffset: number;
+    finaleOffset: number;
+};
+
+export { escapeRegex, extractKoPhonemes, getKoreanRegex, getKoreanUnicode };

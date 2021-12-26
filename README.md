@@ -2,6 +2,10 @@
 
 ## how to use
 
+```typescript
+import { getKoreanRegex, getKoreanUnicode, escapeRegex, extractKoPhonemes } from "ko-fuzzy";
+```
+
 ## example
 
 ```typescript

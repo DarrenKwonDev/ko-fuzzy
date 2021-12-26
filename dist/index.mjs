@@ -79,9 +79,9 @@ var initialToEndKoPhonemes = (initial) => {
 };
 var initialToEndKoPhonemes_default = initialToEndKoPhonemes;
 
-// src/core/regexMatch.ts
+// src/core/getKoreanRegex.ts
 var fuzzyStr = ".*";
-function regexMatch(searchWord, { consonantMatch = false, fuzzy = false }) {
+function getKoreanRegex(searchWord, { consonantMatch = false, fuzzy = false }) {
   let wordArr = [...searchWord];
   let frontChars = wordArr.slice(0, -1);
   let regexPattern;
@@ -138,7 +138,20 @@ function regexMatch(searchWord, { consonantMatch = false, fuzzy = false }) {
     return new RegExp(frontChars.join(fuzzyStr) + fuzzyStr + regexPattern);
   return new RegExp(frontChars.join("") + regexPattern);
 }
-var regexMatch_default = regexMatch;
+var getKoreanRegex_default = getKoreanRegex;
+
+// src/tools/getKoreanUnicode.ts
+function getKoreanUnicode(word) {
+  let base = word.charCodeAt(0).toString(16);
+  if (base.length < 4) {
+    base = base.padStart(4, "0");
+  }
+  return "U+" + base;
+}
+var getKoreanUnicode_default = getKoreanUnicode;
 export {
-  regexMatch_default as regexMatch
+  escapeRegex_default as escapeRegex,
+  extractKoPhonemes_default as extractKoPhonemes,
+  getKoreanRegex_default as getKoreanRegex,
+  getKoreanUnicode_default as getKoreanUnicode
 };
