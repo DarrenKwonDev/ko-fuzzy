@@ -1,6 +1,6 @@
 {
   "name": "ko-fuzzy",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "regex generator for korean auto complete and fuzzy search",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
