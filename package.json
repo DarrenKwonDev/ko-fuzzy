@@ -1,17 +1,19 @@
 {
-  "name": "autofuzzy",
+  "name": "ko-fuzzy",
   "version": "0.0.1",
-  "description": "auto complete and fuzzy search",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "regex generator for korean auto complete and fuzzy search",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "engines": {
     "node": ">= 4.2.1",
     "npm": ">= 3"
   },
   "scripts": {
-    "build:watch": "rm -rf ./dist && tsc -w",
     "build": "rm -rf ./dist && tsc",
+    "build:watch": "rm -rf ./dist && tsc -w",
     "start:dev": "nodemon --exec ts-node ./src/index.ts",
+    "build:pkg": "rm -rf ./dist && tsup src/index.ts --format cjs,esm --dts --clean",
     "format": "prettier --write \"src/**/*.ts\""
   },
   "author": "darrenkwon <anatomy1545@gmail.com>",
@@ -21,7 +23,15 @@
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
     "ts-node": "^10.0.0",
+    "tsup": "^5.11.9",
     "typescript": "^4.3.2"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "repository": {
     "type": "git",
@@ -29,5 +39,8 @@
   },
   "bugs": {
     "url": "https://github.com/DarrenKwonDev/auto/issues"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
