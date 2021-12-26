@@ -1,27 +1,19 @@
-# autoFuzzy
-
-_on developing..._
+# ko-fuzzy
 
 ## how to use
-
-```typescript
-...
-```
 
 ## example
 
 ```typescript
-console.log(exactMatch("서우", { consonantMatch: false }).test("서울특별시")); // true.
-console.log(exactMatch("ㅅㅇ", { consonantMatch: true }).test("서울특별시")); // 초성 검색 옵션 활성화. true.
+console.log(getKoreanRegex("서우", { consonantMatch: false }).test("서울특별시")); // true.
+console.log(getKoreanRegex("ㅅㅇ", { consonantMatch: true }).test("서울특별시")); // 초성 검색 옵션 활성화. true.
 console.log(/"서우"/.test("서울특별시")); // false.
 ```
 
 ```typescript
 // 그 외의 util 함수들
-getUnicode("가"); // U+ac00
-console.log(initialToEndKoPhonemes("ㄱ")); // [가-깋]
-extractKoPhonemes("안");
-// {initial: 'ㅇ', medial: 'ㅏ', finale: 'ㄴ', initialOffset: 11, medialOffset: 0, finaleOffset: 4 }
+getKoreanUnicode("가"); // U+ac00
+extractKoPhonemes("안"); // {initial: 'ㅇ', medial: 'ㅏ', finale: 'ㄴ', initialOffset: 11, medialOffset: 0, finaleOffset: 4 }
 ```
 
 ## 유니코드 및 관련 작업 설명글
@@ -39,4 +31,4 @@ extractKoPhonemes("안");
 
 #### Inspired by
 
-https://github.com/bluewings
+[bluewings](https://github.com/bluewings)

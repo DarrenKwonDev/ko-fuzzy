@@ -12,7 +12,7 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc",
     "build:watch": "rm -rf ./dist && tsc -w",
-    "start:dev": "nodemon --exec ts-node ./src/index.ts",
+    "start:dev": "nodemon --exec ts-node ./example/index.ts",
     "build:pkg": "rm -rf ./dist && tsup src/index.ts --format cjs,esm --dts --clean",
     "format": "prettier --write \"src/**/*.ts\""
   },

@@ -3,14 +3,14 @@ import escapeRegex from "../tools/escapeRegex";
 import extractKoPhonemes from "../tools/extractKoPhonemes";
 import initialToEndKoPhonemes from "../tools/initialToEndKoPhonemes";
 
-interface regexMatchOptions {
+interface getKoreanRegexOptions {
   consonantMatch?: boolean; // 초성 찾기
   fuzzy?: boolean;
 }
 
 const fuzzyStr = ".*";
 
-function regexMatch(searchWord: string, { consonantMatch = false, fuzzy = false }: regexMatchOptions): RegExp {
+function getKoreanRegex(searchWord: string, { consonantMatch = false, fuzzy = false }: getKoreanRegexOptions): RegExp {
   let wordArr = [...searchWord];
   // let frontChars: string[] = []; // 맨 뒤의 문자를 제외한 앞의 문자들을 담기 위한 배열
   let frontChars = wordArr.slice(0, -1); // 마지막 문자를 제외한 나머지 문자
@@ -105,4 +105,4 @@ function regexMatch(searchWord: string, { consonantMatch = false, fuzzy = false 
   return new RegExp(frontChars.join("") + regexPattern);
 }
 
-export default regexMatch;
+export default getKoreanRegex;
