@@ -1,14 +1,17 @@
 # ko-fuzzy
 
-## how to use
+## how to install
 
-```typescript
-import { getKoreanRegex, getKoreanUnicode, escapeRegex, extractKoPhonemes } from "ko-fuzzy";
+```
+npm i ko-fuzzy
 ```
 
 ## example
 
 ```typescript
+import { getKoreanRegex, getKoreanUnicode, escapeRegex, extractKoPhonemes } from "ko-fuzzy";
+
+
 console.log(getKoreanRegex("서우", { consonantMatch: false }).test("서울특별시")); // true.
 console.log(getKoreanRegex("ㅅㅇ", { consonantMatch: true }).test("서울특별시")); // 초성 검색 옵션 활성화. true.
 console.log(/"서우"/.test("서울특별시")); // false.
