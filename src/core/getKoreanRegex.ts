@@ -1,5 +1,4 @@
 import { BASE, INITIALS, FINALES, MEDIALS, MIXED, MEDIAL_RANGE } from "../constants";
-import escapeRegex from "../tools/escapeRegex";
 import extractKoPhonemes from "../tools/extractKoPhonemes";
 import initialToEndKoPhonemes from "../tools/initialToEndKoPhonemes";
 
@@ -12,7 +11,6 @@ const fuzzyStr = ".*";
 
 function getKoreanRegex(searchWord: string, { consonantMatch = false, fuzzy = false }: getKoreanRegexOptions): RegExp {
   let wordArr = [...searchWord];
-  // let frontChars: string[] = []; // 맨 뒤의 문자를 제외한 앞의 문자들을 담기 위한 배열
   let frontChars = wordArr.slice(0, -1); // 마지막 문자를 제외한 나머지 문자
 
   let regexPattern;
@@ -21,7 +19,7 @@ function getKoreanRegex(searchWord: string, { consonantMatch = false, fuzzy = fa
   const phonemes = extractKoPhonemes(lastChar); // 영어거나 공백이면 false 반환
 
   if (phonemes) {
-    const { initial, medial, finale, initialOffset, medialOffset, finaleOffset } = phonemes;
+    const { initial, medial, finale, initialOffset, medialOffset } = phonemes;
 
     // 마지막 문자의 초성으로 시작하는 첫 문자 => 가, 나, 다, 라, ...
     const baseUniCode = initialOffset * FINALES.length * MEDIALS.length + BASE;
@@ -49,12 +47,12 @@ function getKoreanRegex(searchWord: string, { consonantMatch = false, fuzzy = fa
           const [first, second] = MIXED[finale];
 
           // 왆 => 완
-          const wordwithSigleCoda = String.fromCharCode(baseUniCode + medialOffset * FINALES.length + FINALES.join("").search(first) + 1);
+          const wordWithSingleCoda = String.fromCharCode(baseUniCode + medialOffset * FINALES.length + FINALES.indexOf(first));
 
           // 겹받침 2번째 자음의 범위. 왆 => ㅎ => [하-힣]
           const CodaToRange = initialToEndKoPhonemes(second);
 
-          patterns.push(`${wordwithSigleCoda}${CodaToRange}`);
+          patterns.push(`${wordWithSingleCoda}${CodaToRange}`);
         }
         break;
 
@@ -66,8 +64,8 @@ function getKoreanRegex(searchWord: string, { consonantMatch = false, fuzzy = fa
         if (MEDIAL_RANGE[medial]) {
           const [first, second] = MEDIAL_RANGE[medial];
 
-          from = baseUniCode + MEDIALS.join("").search(first) * FINALES.length;
-          to = baseUniCode + MEDIALS.join("").search(second) * FINALES.length + FINALES.length - 1;
+          from = baseUniCode + MEDIALS.indexOf(first) * FINALES.length;
+          to = baseUniCode + MEDIALS.indexOf(second) * FINALES.length + FINALES.length - 1;
         } else {
           from = baseUniCode + medialOffset * FINALES.length;
           to = from + FINALES.length - 1;
@@ -79,6 +77,7 @@ function getKoreanRegex(searchWord: string, { consonantMatch = false, fuzzy = fa
       // 초성으로 끝나면 ㅎ => [하-힣]으로 모두 잡으면 됨
       case initial !== "":
         patterns.push(initialToEndKoPhonemes(initial));
+        break;
 
       default:
         break;
@@ -88,21 +87,23 @@ function getKoreanRegex(searchWord: string, { consonantMatch = false, fuzzy = fa
   }
 
   // 만약 초성 찾기가 활성화 되어 있다면 맨 뒤의 음절을 제외한 앞의 단어들의 전체 range를 추가해야 함
-  // 말이 어려운데, 예를 들어 ㄱㅅ충 => [가-깋][사-싷][충|아-앟]이 되어야 하므로, frontChars에 따로 initialToEndKoPhonemes 함수를 써줘야 한다.
+  // 말이 어려운데, 예를 들어 ㄱㅅ충 => [가-깋][사-싷](충|아-앟)이 되어야 하므로, frontChars에 따로 initialToEndKoPhonemes 함수를 써줘야 한다.
   if (consonantMatch) {
-    frontChars = frontChars.map((char) => (char.search(/[ㄱ-ㅎ]/) !== -1 ? initialToEndKoPhonemes(char) : escapeRegex(char)));
+    frontChars = frontChars.map(initialToEndKoPhonemes);
   }
 
   // 마지막 문자가 한글이 아니므로 별도의 처리를 하지 않고 그냥 일치하는지만 체크하도록
   if (!phonemes) {
-    if (fuzzy) return new RegExp(frontChars.join(fuzzyStr) + fuzzyStr + lastChar);
+    if (fuzzy) return new RegExp(frontChars.concat(lastChar).join(fuzzyStr));
     return new RegExp(searchWord);
   }
 
   // fuzzy 매칭이면 사이에 문자가 올 수 있다는 것이므로 .*를 삽입하기
-  if (fuzzy) return new RegExp(frontChars.join(fuzzyStr) + fuzzyStr + regexPattern);
+  if (fuzzy) {
+    return new RegExp(frontChars.concat(regexPattern as string).join(fuzzyStr));
+  }
 
-  return new RegExp(frontChars.join("") + regexPattern);
+  return new RegExp(frontChars.concat(regexPattern as string).join(""));
 }
 
 export default getKoreanRegex;

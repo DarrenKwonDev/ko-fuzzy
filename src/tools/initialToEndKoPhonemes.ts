@@ -1,4 +1,5 @@
 import { BASE, FINALES, INITIALS, MEDIALS } from "../constants";
+import escapeRegex from "./escapeRegex";
 
 // 해당 자음으로 시작하는 모든 문자의 범위를 출력합니다. 예를 들어 ㄱ을 넣으면 [가-깋]을 반환합니다.
 const initialToEndKoPhonemes = (initial: string) => {
@@ -11,7 +12,7 @@ const initialToEndKoPhonemes = (initial: string) => {
 
     return `[${startChar}-${endChar}]`;
   }
-  return initial;
+  return escapeRegex(initial);
 };
 
 export default initialToEndKoPhonemes;
